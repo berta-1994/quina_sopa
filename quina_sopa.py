@@ -124,35 +124,91 @@ local_css("style/style.css")
 
 
 # Initialize session state for radio buttons
+# sinó tenia error
 if 'respostes' not in st.session_state:
     st.session_state['respostes'] = [None] * len(preguntes)
 
-# --------------MAIN SECTION ----------------:
-
+# --------------QUESTIONARI ----------------:
+# variable per guardar les respostes
 respostes = []
 
-for i, pregunta in enumerate(preguntes):
-    st.markdown(f"<p style='margin-bottom: 3px; font-size:16px;'><b>{pregunta}</b></p>", unsafe_allow_html=True)
-    resposta = st.radio(" ", opcions[i][0], index=None, key=f"pregunta_{i}")
-    
-    if resposta is not None:
-      respostes.append(opcions[i][0].index(resposta))  
+# Faig dues columnes perquè 
+with st.container():
+    st.write("---") # linia divisoria
 
-if st.button("Descobreix la teva sopa!"):
-    if len(respostes) == len(preguntes):
-       sopa_max, sopes_descripcions, sopes = calculate_soup(respostes)
-       # sopa, sopes_count, sopes_descripcions = calculate_soup(respostes)
-       st.success(f"🌟 Ets la sopa: **{sopa_max}**! 🎉")
-       st.write(f"Com és la/el **{sopa_max}**: {sopes_descripcions[sopa_max]}")
+    # separo la pàgina en dues columnes
+    left_column, right_column = st.columns(2)
 
-       # Show detailed count of soups
-       st.subheader("Recompte de puntuacions:")
-       for sopa, count in sopes.items():
-          st.write(f"- {sopa}: {count}")
+    # columna esquerra:
+    with left_column:
+       # itera per l'índex (i) i cada pregunta
 
+       for i, pregunta in enumerate(preguntes):
+          # defineix l'estil del titol de la pregunta (també a style.css)
+          st.markdown(f"<p style='margin-bottom: -1px; font-size:16px;'><b>{pregunta}</b></p>", unsafe_allow_html=True)
+
+
+          # crea una radio button (un botó on només pots escollir una opció)
+          # " " - fa que no hi apareixi res escrit sobre les opcions
+          # opcions[i][0] proporciona una llista de les op cions per la pregunta corresponent (i)
+          # index = None fa que quan obres l'app cap pregunta estigui pre-seleccionada
+          # key=f"pregunta_{i}" dona una clau única a cada pregunta perquè streamlit pugui guardar cada resposta independentment
+       
+          resposta = st.radio(" ", opcions[i][0], index=None, key=f"pregunta_{i}")
+
+          if resposta is not None:
+             # quan l'usuari selecciona una resposta, la guarda a la llista de respostes
+             respostes.append(opcions[i][0].index(resposta))  
+
+        # Botó per descobrir quina sopa és l'usuari
+       if st.button("Descobreix la teva sopa!"):
           
-    else:
-        st.error("🚫 Per favor, respon totes les preguntes abans de descobrir la teva sopa!")
+          # totes les respostes han d'estar contestades
+          if len(respostes) == len(preguntes):
+             
+             # fem servir la funció calculate_soup de l'inici per calcular la sopa amb més punts (sopa max)
+             # el recompte de totes les sopes (sopes)
+             # i la descirpció de cada sopa (sopes_descripcions)
+             sopa_max, sopes_descripcions, sopes = calculate_soup(respostes)
+            
+             st.success(f"🌟 Ets la sopa: **{sopa_max}**! 🎉")
+             st.write(f"Com és la/el **{sopa_max}**: {sopes_descripcions[sopa_max]}")
+
+             # creo una Flag perquè el recompte només s'activi quan es premi el botó
+             show_recompte = True
+
+
+          else:
+             st.error("🚫 Per favor, respon totes les preguntes abans de descobrir la teva sopa!")
+
+       else: 
+          # en el cas de que el botó no s'hagi premut, la flag serà False
+          show_recompte = False
+
+    # columna dreta:
+    with right_column:
+       
+       # perquè funcioni sopa, sopes... he de tornar a crida la funció calculate_soup.
+         # això és perquè la funció calculate_soup no està definida fora de la condició del botó
+
+       sopa_max, sopes_descripcions, sopes = calculate_soup(respostes)
+
+
+# -------------- DESCRIPCIONS DE LES SOPES ------------:
+       st.subheader("Descripcions de les sopes:")
+
+       for sopa, descripcio in sopes_descripcions.items():
+        if st.button(sopa):
+           st.write(descripcio)
+
+
+# -------------- RECOMPTES DE PUNTUACIONS ------------:
+
+       if show_recompte: # si s'activa show_recompte = True (flag)
+          st.subheader("Recompte de puntuacions:")
+
+          for sopa, count in sopes.items():
+            st.write(f"- {sopa}: {count}")
 
 # ------------ CONTACT SECTION ------------:
 with st.container():

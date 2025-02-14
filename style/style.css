@@ -7,8 +7,8 @@
 }
 /* Reduce space between question (label) and options (radio buttons) */
 .stRadio > label {
-  margin-bottom: 3px !important;  /* Remove extra space below question */
-  padding-bottom: 3px !important; /* Reduce inner padding */
+  margin-bottom: -1px !important;  /* Remove extra space below question */
+  padding-bottom: 1px !important; /* Reduce inner padding */
   display: block; /* Ensure it's treated as a block element */
 }
 
