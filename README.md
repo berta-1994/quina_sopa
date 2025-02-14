@@ -23,8 +23,19 @@ Les opcións de sopes son:
 
 ## Descripció:
 
-El codi per desenvolupar el qüestionari s'ha fet amb streamlit, seguint el tutorial que he mencionat a la bibliografia.
+Aquest és el meu primer repositori de Github. Com que no tenia clar com incorporar un repositori correctament he seguit el tutorial de CharmingData que he incorporat a la bibliografia. 
 
+El codi per desenvolupar el qüestionari s'ha fet amb la llibreria streamlit, seguint el tutorial que (també) he mencionat a la bibliografia. El codi obre una pàgina web on hi ha 10 preguntes amb opcions per seleccionar. 
+Un cop totes les preguntes s'han respost (clicant una opció), ens permet descobir "quina sopa som".
+
+Apareix un requadret verd que ens anuncia quina sopa som i descriu les característiques d'aquesta sopa. 
+Seguidament hi apareixen la resta de sopes i les puntuacions que han obtingut segones les teves respostes. 
+
+Al final de tot hi apareix un formulari de contacte que permet enviar un missatge al meu mail. 
+
+L'estil general del web (color del text, fons i de les icones) l'he fet seguint el blog de streamlit de com seleccionar els temes: https://blog.streamlit.io/introducing-theming/. 
+
+Per modificar el tamany de les lletres o la tipografia, he fet servir la plantilla del GitHub de SvenBo (bibliografia) com a base i he modificat alguns elements per adequar-ho l'estil de la meva pàgina. 
 
 ## Bibliografia
 Tutorial: https://www.youtube.com/watch?v=VqgUkExPvLY&ab_channel=CodingIsFun
